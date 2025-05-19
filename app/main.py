@@ -5,10 +5,17 @@ from .database import Base, engine, SessionLocal
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from .auth import create_access_token, get_current_user
 from . import auth  # Если файлы в одном пакете
+from fastapi.middleware.cors import CORSMiddleware
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Или конкретный URL фронтенда
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Зависимость для получения сессии БД
 def get_db():
     db = SessionLocal()
